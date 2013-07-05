@@ -28,7 +28,7 @@ public class Server {
 	}
 
 	public Client wait4Client() throws IOException {
-		System.out.println("Server Initialized");
+		logger.log(Level.INFO, "Server Initialized");
 		Socket clientSocket = null;
 		try {
 			clientSocket = serverSocket.accept();

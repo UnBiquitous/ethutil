@@ -59,7 +59,6 @@ class ThreadedPing extends Thread{
 	public void run(){
 		
 		try {
-			//System.out.println("Searching: "+host+" - "+this.getId()+" | "+this.getName()+" |"+ this.getState());
 			// Ping using Native OS Command
 			pingUsingNativeOS();
 			// Native OS Command had better results than Java Ping during tests, So We will use the first.
@@ -99,7 +98,6 @@ class ThreadedPing extends Thread{
 				line = line+"\n";
 				// If TTL was printed, the host was reached! :P
 				if (line.contains("TTL=") || line.contains("ttl=")){
-					//System.out.println("THREADED PING - Found Host:" + host);
 					// Notifies ther EthUtil class
 					ethUtil.deviceDiscoveredByPingThread(host);
 				}
@@ -122,7 +120,6 @@ class ThreadedPing extends Thread{
 	 */
 	private void pingUsingJava() throws IOException, UnknownHostException {
 		if (InetAddress.getByName(host).isReachable(5000)){
-			//System.out.println("THREADED PING - Found Host:" + host);
 			ethUtil.deviceDiscoveredByPingThread(host);
 		}
 	}

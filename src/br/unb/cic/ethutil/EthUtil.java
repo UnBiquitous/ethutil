@@ -199,7 +199,7 @@ public class EthUtil {
 			waitFinishingAllthreads(threadList);
 			// Notifies the listener the finish of discovery. A list of all hosts is returned
 			listener.deviceDiscoveryFinished(new Vector<String>(neighbourIpVector));
-		
+			neighbourIpVector.clear();
 		}
 	}
 
@@ -208,16 +208,21 @@ public class EthUtil {
 	 * @param threadList
 	 */
 	private void waitFinishingAllthreads(List<ThreadedPing> threadList) {
-		boolean isAllThreadFinished = false;
-		// Busy Wait
-		while (!isAllThreadFinished){
-			isAllThreadFinished = true;
+//		boolean isAllThreadFinished = false;
+//		// Busy Wait
+//		while (!isAllThreadFinished){
+//			isAllThreadFinished = true;
 			for (int j = 0; j < threadList.size(); j++) {
 				if (threadList.get(j).isAlive()){ // is thread alive?
-					isAllThreadFinished = false;
+//					isAllThreadFinished = false;
+					try {
+						threadList.get(j).join();
+					} catch (InterruptedException e) {
+						throw new RuntimeException(e);
+					}
 				}
 			}
-		}
+//		}
 	}
 	
 
