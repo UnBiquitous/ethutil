@@ -198,8 +198,9 @@ public class EthUtil {
 			// Wait untill all threads has finished
 			waitFinishingAllthreads(threadList);
 			// Notifies the listener the finish of discovery. A list of all hosts is returned
-			listener.deviceDiscoveryFinished(new Vector<String>(neighbourIpVector));
+			Vector<String> param = new Vector<String>(neighbourIpVector);
 			neighbourIpVector.clear();
+			listener.deviceDiscoveryFinished(param);
 		}
 	}
 
