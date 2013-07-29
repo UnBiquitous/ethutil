@@ -5,12 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -104,27 +102,11 @@ public class EthUtil {
 		
 		List<String> ips = new ArrayList<String>();
 		
-		Enumeration<NetworkInterface> e1;
-		try {
-			e1 = (Enumeration<NetworkInterface>) NetworkInterface.getNetworkInterfaces();
-			
-			while(e1.hasMoreElements()) {
-				NetworkInterface ni = e1.nextElement();
-				
-				if (!ni.isLoopback() && !ni.isVirtual() && ni.isUp()){
-					Enumeration<InetAddress> e2 = ni.getInetAddresses();
-					String addr = null;
-					while(e2.hasMoreElements()) {
-						InetAddress ia = e2.nextElement();
-						if (!ia.isLoopbackAddress() && !ia.isAnyLocalAddress() && !ia.isMulticastAddress()){
-							if (!ia.toString().contains(":")){
-								// FIXME : TCP Plugin : This denies a ipv6 server to be create which is a very restrictive strategy.
-								ips.add(ia.getHostAddress());
-							}
-						}
-					}
-				}
+		try{
+			for (String s :NetworkInterfaceHelper.listLocalAddresses()){
+				ips.add(s);
 			}
+		
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
