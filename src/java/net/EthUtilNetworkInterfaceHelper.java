@@ -1,4 +1,4 @@
-package br.unb.cic.ethutil;
+package java.net;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NetworkInterfaceHelper {
+public class EthUtilNetworkInterfaceHelper {
 	public static String[] listLocalAddresses() throws SocketException {
 		Enumeration<NetworkInterface> interfaces = (Enumeration<NetworkInterface>)NetworkInterface.getNetworkInterfaces();
 		Map<Integer, String> addressMap = new HashMap<Integer, String>(); 

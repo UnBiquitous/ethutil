@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.EthUtilNetworkInterfaceHelper;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -103,7 +104,7 @@ public class EthUtil {
 		List<String> ips = new ArrayList<String>();
 		
 		try{
-			for (String s :NetworkInterfaceHelper.listLocalAddresses()){
+			for (String s :EthUtilNetworkInterfaceHelper.listLocalAddresses()){
 				ips.add(s);
 			}
 		
