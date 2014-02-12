@@ -10,18 +10,16 @@ import java.util.List;
 
 public class EthUtilNetworkInterfaceHelper {
 	
-	public static void main(String[] args) throws Exception {
-		for(String s :listLocalAddresses()){
-			System.out.print(s+" ,");
-		}
-		System.out.println();
-	}
 	
 	public static String[] listLocalAddresses() throws SocketException {
+		return listLocalAddresses(false);
+	}
+	
+	public static String[] listLocalAddresses(boolean includeVirtuals) throws SocketException {
 		Enumeration<NetworkInterface> interfaces = (Enumeration<NetworkInterface>)NetworkInterface.getNetworkInterfaces();
 		List<String> addressList = new ArrayList<String>();
 		while(interfaces.hasMoreElements()) {
-			analyseInterface(interfaces,addressList);
+			analyseInterface(interfaces,addressList,includeVirtuals);
 		}
 		
 		String[] addresses = new String[addressList.size()];
@@ -34,9 +32,10 @@ public class EthUtilNetworkInterfaceHelper {
 	}
 
 	private static void analyseInterface(
-			Enumeration<NetworkInterface> interfaces, List<String> addressList) throws SocketException {
+			Enumeration<NetworkInterface> interfaces, List<String> addressList,
+			boolean includeVirtuals) throws SocketException {
 		NetworkInterface _interface = interfaces.nextElement();
-		if (isValidInterface(_interface)){
+		if (isValidInterface(_interface,includeVirtuals)){
 			Enumeration<InetAddress> adresses = _interface.getInetAddresses();
 			while(adresses.hasMoreElements()) {
 				analyseAddress(adresses,_interface,addressList);
@@ -59,8 +58,24 @@ public class EthUtilNetworkInterfaceHelper {
 				&& ia instanceof Inet4Address; // Ignores IPv6
 	}
 
-	private static boolean isValidInterface(NetworkInterface ni)
+	private static boolean isValidInterface(NetworkInterface ni,
+			boolean includeVirtuals)
 			throws SocketException {
-		return !ni.isLoopback() && !ni.isVirtual() && ni.isUp();
+		boolean valid = !ni.isLoopback() && ni.isUp();
+		if (includeVirtuals){
+			return valid;
+		}
+		return valid && !isConsideredVirtual(ni);
+	}
+
+	private static boolean isConsideredVirtual(NetworkInterface ni) {
+		return ni.isVirtual() || containsVirualName(ni);
+	}
+
+	private static boolean containsVirualName(NetworkInterface ni) {
+		String upperCaseName = ni.getName().toUpperCase();
+		return upperCaseName.contains("VMNET") ||
+				upperCaseName.contains("VMWARE") ||
+				upperCaseName.contains("VIRTUALBOX");
 	}
 }

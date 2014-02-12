@@ -25,12 +25,6 @@ import java.util.regex.Pattern;
  */
 public class EthUtil {
 	
-	/* *****************************
-	 *   	ATRIBUTES
-	 * *****************************/
-	private int UBIQUITOS_ETH_TCP_PORT;
-	private int UBIQUITOS_ETH_TCP_CONTROL_PORT;
-	
 	public static final int DISCOVER_DEVICES_USING_ARP  = 0;
 	public static final int DISCOVER_DEVICES_USING_PING = 1;
 	// Maximum number of threads that will be created to ping
@@ -117,14 +111,6 @@ public class EthUtil {
 		//return localMachine.getHostAddress();
 	}
 		
-	/* *****************************
-	 *   	PUBLIC STATIC METHODS
-	 * *****************************/
-	
-	public static Socket getSocket(String host, int port, int timeout) throws Exception{
-		return TimedSocket.getSocket(host, port, timeout);
-	}
-
 	/* *****************************
 	 *   	PRIVATE METHODS - PING
 	 * *****************************/
