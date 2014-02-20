@@ -6,7 +6,7 @@
 	<artifactId>ethutil</artifactId>
 	<name>ethutil</name>
 	<packaging>jar</packaging>
-	<version>1.4</version>
+	<version>1.4.1</version>
   
 	<build>
 		<directory>target</directory>

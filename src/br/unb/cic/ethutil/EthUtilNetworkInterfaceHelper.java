@@ -61,7 +61,7 @@ public class EthUtilNetworkInterfaceHelper {
 	private static boolean isValidInterface(NetworkInterface ni,
 			boolean includeVirtuals)
 			throws SocketException {
-		boolean valid = !ni.isLoopback() && ni.isUp();
+		boolean valid = !ni.isLoopback() && ni.isUp() && ni.getMTU() > -1;
 		if (includeVirtuals){
 			return valid;
 		}
@@ -69,11 +69,12 @@ public class EthUtilNetworkInterfaceHelper {
 	}
 
 	private static boolean isConsideredVirtual(NetworkInterface ni) {
-		return ni.isVirtual() || containsVirualName(ni);
+		return ni.isVirtual() || isVirualName(ni.getName()) 
+				|| isVirualName(ni.getDisplayName());
 	}
 
-	private static boolean containsVirualName(NetworkInterface ni) {
-		String upperCaseName = ni.getName().toUpperCase();
+	private static boolean isVirualName(String name) {
+		String upperCaseName = name.toUpperCase();
 		return upperCaseName.contains("VMNET") ||
 				upperCaseName.contains("VMWARE") ||
 				upperCaseName.contains("VIRTUALBOX");
